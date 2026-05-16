@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & Meta Tags -->
+    <title>PromptForge | Ultimate AI Prompt Generator</title>
+    <meta name="description" content="PromptForge by Raj Kishor Mahapatra - The ultimate free AI prompt generator. Craft perfect prompts for text, image, code, video, and music generation.">
+    <meta name="keywords" content="AI prompt generator, prompt engineering, text to image prompt, chatgpt prompt maker, midjourney prompt generator, free ai tools, Raj Kishor Mahapatra">
+    <meta name="author" content="Raj Kishor Mahapatra">
+    <link rel="canonical" href="https://itsrkmahapatra.github.io/PromptForge/">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itsrkmahapatra.github.io/PromptForge/">
+    <meta property="og:title" content="PromptForge | AI Prompt Generator">
+    <meta property="og:description" content="Generate high-quality, professional prompts for any AI model instantly. Built by Raj Kishor Mahapatra.">
+    <meta property="og:image" content="https://itsrkmahapatra.lovestoblog.com/images/My%20Image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2314b8a6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 10V3L4 14h7v7l9-11h-7z'%3E%3C/path%3E%3C/svg%3E" type="image/svg+xml">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            900: '#134e4a',
+                        }
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'slide-up': 'slideUp 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-emerald-400">PromptForge</h1>
+            </div>
+            <div class="text-sm text-slate-400 hidden sm:block font-medium">
+                Engineered for <span class="text-brand-500">Maximum Impact</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Input Form -->
+        <div class="lg:col-span-5 flex flex-col gap-6 animate-slide-up">
+            <div class="space-y-2">
+                <h2 class="text-3xl font-bold text-white tracking-tight">Craft Your Request</h2>
+                <p class="text-slate-400 text-sm">Tell us what you need, and our engine will build the perfect AI prompt. <span class="text-brand-500 font-medium">All fields are optional.</span></p>
+            </div>
+
+            <form id="prompt-form" class="space-y-5 bg-slate-900/50 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Prompt Type -->
+                    <div class="space-y-1">
+                        <label for="prompt-type" class="block text-sm font-medium text-slate-300">Generation Type</label>
+                        <select id="prompt-type" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                            <option value="Text Generation (ChatGPT, Claude, etc.)">Text (Articles, Code, Logic)</option>
+                            <option value="Image Generation (Midjourney, DALL-E, etc.)">Image (Midjourney, DALL-E)</option>
+                            <option value="Code Generation (GitHub Copilot, Cursor)">Code (Scripts, Apps)</option>
+                            <option value="Video Generation (Sora, Runway)">Video (Sora, Runway)</option>
+                            <option value="Music & Audio Generation (Suno, Udio)">Music (Suno, Udio)</option>
+                        </select>
+                    </div>
+
+                    <!-- Topic -->
+                    <div class="space-y-1">
+                        <label for="topic" class="block text-sm font-medium text-slate-300">Topic / Idea</label>
+                        <input type="text" id="topic" placeholder="e.g., A marketing plan..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white placeholder-slate-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Persona -->
+                    <div class="space-y-1">
+                        <label for="persona" class="block text-sm font-medium text-slate-300">AI Role / Persona</label>
+                        <select id="persona" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                            <option value="">Any Role (Default)</option>
+                            <option value="Expert Software Developer">Expert Software Developer</option>
+                            <option value="Creative Copywriter">Creative Copywriter</option>
+                            <option value="Business Strategist">Business Strategist</option>
+                            <option value="Master Photographer / Cinematographer">Master Photographer</option>
+                            <option value="Professional Music Producer">Music Producer</option>
+                            <option value="Friendly Tutor">Friendly Tutor</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Tone -->
+                    <div class="space-y-1">
+                        <label for="tone" class="block text-sm font-medium text-slate-300">Tone of Voice / Vibe</label>
+                        <select id="tone" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                            <option value="">Neutral (Default)</option>
+                            <option value="Professional & Formal">Professional & Formal</option>
+                            <option value="Casual & Conversational">Casual & Conversational</option>
+                            <option value="Cinematic & Dramatic">Cinematic & Dramatic</option>
+                            <option value="Upbeat & Energetic">Upbeat & Energetic</option>
+                            <option value="Humorous & Witty">Humorous & Witty</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Target Audience -->
+                    <div class="space-y-1">
+                        <label for="audience" class="block text-sm font-medium text-slate-300">Target Audience</label>
+                        <input type="text" id="audience" placeholder="e.g., Beginners, Executives" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white placeholder-slate-500">
+                    </div>
+
+                    <!-- Output Length -->
+                    <div class="space-y-1">
+                        <label for="length" class="block text-sm font-medium text-slate-300">Output Detail / Length</label>
+                        <select id="length" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                            <option value="">Flexible (Default)</option>
+                            <option value="Very Short & Concise">Short & Concise</option>
+                            <option value="Medium detail">Medium detail</option>
+                            <option value="Highly Detailed & Comprehensive">Highly Detailed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Additional Context -->
+                <div class="space-y-1">
+                    <label for="context" class="block text-sm font-medium text-slate-300">Additional Context / Details</label>
+                    <textarea id="context" rows="3" placeholder="Any specific requirements, constraints, or formatting requests..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white placeholder-slate-500 resize-none custom-scrollbar"></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 pt-2">
+                    <button type="button" id="clear-btn" class="px-5 py-2.5 rounded-lg font-medium text-sm border border-slate-700 hover:bg-slate-800 transition-colors text-slate-300">
+                        Clear
+                    </button>
+                    <button type="button" id="generate-btn" class="flex-1 bg-brand-600 hover:bg-brand-500 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 group relative overflow-hidden">
+                        <span class="relative z-10 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            Generate Prompt
+                        </span>
+                        <!-- Loading Spinner -->
+                        <svg id="loading-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden absolute" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Column: Result Output -->
+        <div class="lg:col-span-7 flex flex-col animate-slide-up" style="animation-delay: 0.1s;">
+            <div class="flex-grow flex flex-col bg-slate-900/50 rounded-2xl border border-slate-800 shadow-xl overflow-hidden relative">
+                
+                <!-- Output Header -->
+                <div class="bg-slate-800/50 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+                    <h3 class="font-medium text-slate-200 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        Generated Output
+                    </h3>
+                    <div class="flex gap-2">
+                        <button id="copy-btn" class="hidden text-slate-400 hover:text-white hover:bg-slate-700 p-2 rounded-md transition-colors" title="Copy exact raw text">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Output Body -->
+                <div class="flex-grow relative">
+                    <!-- Empty State -->
+                    <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 px-6 text-center pointer-events-none">
+                        <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        <p>Fill out the optional fields and click Generate to see your perfectly engineered prompt here.</p>
+                    </div>
+
+                    <!-- Result Rich Text -->
+                    <div id="result-container" class="hidden h-full p-6">
+                        <div id="result-text" contenteditable="true" spellcheck="false" class="w-full h-full min-h-[350px] bg-transparent text-slate-300 text-[15px] leading-relaxed outline-none overflow-y-auto whitespace-pre-wrap custom-scrollbar font-medium"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/50 bg-slate-950/50 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                
+                <!-- Left: Copyright & Legal -->
+                <div class="text-center md:text-left space-y-2">
+                    <p class="text-slate-500 text-sm">Â© <span id="year"></span> PromptForge. All rights reserved.</p>
+                    <a href="terms.html" class="text-xs text-slate-500 hover:text-slate-300 transition-colors underline-offset-4 hover:underline">Disclaimer & Terms of Conditions</a>
+                </div>
+
+                <!-- Right: Developer Profile -->
+                <div class="flex items-center gap-4 bg-slate-900/80 px-5 py-3 rounded-2xl border border-slate-800 shadow-lg">
+                    <img src="https://itsrkmahapatra.lovestoblog.com/images/My%20Image.jpg" alt="Raj Kishor Mahapatra" class="w-12 h-12 rounded-full border-2 border-brand-500 object-cover shadow-sm">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider mb-0.5">Developer</span>
+                        <span class="text-slate-200 font-bold text-sm">Raj Kishor Mahapatra</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/app.js"></script>
+<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="itsrkmahapatra" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+</body>
+</html>
+
