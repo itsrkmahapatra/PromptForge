@@ -1,35 +1,37 @@
-# 🚀 PromptForge - Ultimate AI Prompt Generator
+# 🚀 PromptForge
 
-## 🚀 Overview
-Generate powerful prompts for ChatGPT, Midjourney, Claude, and more. Highly optimized for productivity and prompt engineering. Free and open-source.
+## 🎯 Overview
+PromptForge is the ultimate AI prompt generator designed for creators, developers, and prompt engineers. It provides a lightning-fast interface to generate, refine, and optimize high-quality prompts for leading AI platforms like ChatGPT, Midjourney, and Claude.
 
-## ✨ Features
-- Multiple AI platform support (ChatGPT, Midjourney, Claude, Gemini, LLaMA)
-- Prompt templates by category
-- Real-time preview & One-click copy
-- SEO optimized & Mobile responsive
+## ✨ Key Features
+- **Multi-Platform Support**: Specialized templates for ChatGPT, Midjourney, Claude, and Google Gemini.
+- **Categorized Templates**: Effortlessly browse through organized prompt categories for various use cases.
+- **Real-Time Preview**: Instantly see how your prompt evolves as you select different parameters.
+- **One-Click Copy**: Streamlined functionality to copy your generated prompts directly to your clipboard.
+- **Mobile Responsive**: Fully optimized for a seamless experience across all devices.
 
-## 🎯 Supported Platforms
-- ChatGPT / GPT-4
-- Midjourney
-- Claude
-- Google Gemini
+## 🚀 Get Started
+**Access the live portal:**
+[👉 Launch PromptForge Live Portal](https://itsrkmahapatra.github.io/PromptForge/)
 
-## ⚡ Quick Start
-[Live Demo](https://itsrkmahapatra.github.io/PromptForge/)
+Simply select your target AI platform, choose a category, and customize your parameters to generate professional-grade prompts in seconds.
 
-```bash
-git clone https://github.com/itsrkmahapatra/PromptForge.git
-cd PromptForge
-# Open index.html
-```
+## 🛠️ Technology Stack
+- HTML5 (Structure)
+- JavaScript (Prompt Logic)
+- CSS3 / Tailwind CSS (Styling)
 
-## 🛠️ Tech Stack
-- HTML5, CSS3 (TailwindCSS)
-- Vanilla JavaScript
+## 📜 License & Copyright
+© 2026 Raj Kishor Mahapatra. All Rights Reserved.
 
-## 🤝 Contributing
-Contributions make the open source community amazing. Please read `CONTRIBUTING.md`.
+**License:** MIT License (Live Portal Use)
+- ✅ Allowed: Access and use through the live portal
+- ❌ Prohibited: Modification, commercial sale, or code reproduction
 
-## 📄 License
-MIT License
+For inquiries: raju.chikitigada@gmail.com
+
+## 🤝 About the Developer
+Developed by **Raj Kishor Mahapatra** - Full-Stack Developer, AI Enthusiast, Open-Source Contributor
+
+---
+*For more projects, visit: https://github.com/itsrkmahapatra*
