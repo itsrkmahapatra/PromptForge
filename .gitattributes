@@ -1,0 +1,14 @@
+# Security & Proprietary Filter
+# Mark all source files as proprietary and prevent unauthorized distribution
+
+*.js   -diff -merge
+*.ts   -diff -merge
+*.jsx  -diff -merge
+*.tsx  -diff -merge
+*.html -diff -merge
+*.css  -diff -merge
+
+LICENSE export-ignore
+SECURITY.md export-ignore
+TERMS.md export-ignore
+DMCA-NOTICE.md export-ignore

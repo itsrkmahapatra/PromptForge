@@ -1,0 +1,16 @@
+PROPRIETARY LICENSE & RESTRICTIONS
+
+Copyright (c) 2026 Raj Kishor Mahapatra. All Rights Reserved.
+
+FORBIDDEN:
+- Cloning or forking this repository.
+- Modifying the source code.
+- Selling, renting, or redistributing the software.
+- Removing or altering this notice.
+
+ALLOWED:
+- Accessing the software via the official live portal.
+- Viewing the source code for personal educational purposes.
+
+Effective Date: 2026-05-18
+Next Review Date: 2026-11-18
