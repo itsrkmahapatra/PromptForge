@@ -1,13 +1,18 @@
-# Contributing Guidelines
+# Contribution Policy
 
-Thank you for your interest in contributing! We welcome all contributions.
+Thank you for your interest in this project. Please be advised that this is a **Proprietary Software** repository.
 
-## How to Contribute
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## No Code Contributions
+- ❌ **No Pull Requests:** We do not accept pull requests for code modifications or features.
+- ❌ **No Direct Access:** Access is limited to viewing the source code for educational purposes only.
 
-## Reporting Bugs
-Please use the provided bug report template when creating an issue.
+## Allowed Contributions
+We value user feedback. You may contribute by:
+- Reporting bugs via GitHub Issues.
+- Suggesting new features for the live portal.
+- Providing feedback on UI/UX.
+
+## Legal Note
+By submitting an issue or feedback, you agree that your suggestions may be implemented in the official software without compensation or attribution.
+
+Reference: [LICENSE](./LICENSE)
