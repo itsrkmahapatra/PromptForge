@@ -90,7 +90,7 @@
             font-size: 20px;
             font-weight: 700;
             text-align: center;
-            color: white;
+            color: #14b8a6;
             transition: border-color 0.2s;
             outline: none;
         }
