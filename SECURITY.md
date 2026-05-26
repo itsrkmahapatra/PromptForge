@@ -1,19 +1,20 @@
 # Security Policy
 
+## Privacy Statement
+This project is built on a **privacy-first, client-side architecture**. 
+- **Zero Data Collection**: We do not collect, store, or transmit user data.
+- **Local Processing**: All file manipulations, conversions, and generations happen locally within the user's browser memory.
+- **No Tracking**: We do not use intrusive analytics or third-party tracking scripts.
+
 ## Supported Versions
-| Version | Supported |
-| ------- | --------- |
-| 1.0.x   | ✅ Yes    |
-| < 1.0   | ❌ No     |
+Only the latest commit on the `main` branch (which mirrors the Live Portal) is supported with security updates.
+
+| Version | Supported          |
+| ------- | ------------------ |
+| Latest  | :white_check_mark: |
+| Older   | :x:                |
 
 ## Reporting a Vulnerability
-Please **do not** use GitHub Issues to report security vulnerabilities.
-If you discover a security vulnerability, please send an e-mail to security@example.com (placeholder).
-We will acknowledge receipt of your vulnerability report within 48 hours and strive to send you regular updates about our progress.
+If you discover a security vulnerability (e.g., Cross-Site Scripting, prototype pollution), please do **NOT** open a public issue. 
 
-## Security Updates
-Security updates are released as soon as a vulnerability is mitigated.
-
-## Security Best Practices
-- Always use the latest version.
-- Ensure your environment variables and secrets are not exposed.
+Instead, report it responsibly by emailing **raju.chikitigada@gmail.com**. We aim to acknowledge reports within 48 hours and will work diligently to patch the vulnerability.

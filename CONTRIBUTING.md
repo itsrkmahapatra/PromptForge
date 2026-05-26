@@ -1,18 +1,28 @@
-# Contribution Policy
+# Contributing Guidelines
 
-Thank you for your interest in this project. Please be advised that this is a **Proprietary Software** repository.
+First off, thank you for considering contributing to this open-source project! 
+**Important Note:** This guide is strictly for *developers* looking to contribute to the source code. End-users do not need to install anything and can access the tool directly via the live portal.
 
-## No Code Contributions
-- ❌ **No Pull Requests:** We do not accept pull requests for code modifications or features.
-- ❌ **No Direct Access:** Access is limited to viewing the source code for educational purposes only.
+## Code of Conduct
+By participating in this project, you agree to maintain a professional, welcoming, and inclusive environment. Please respect all contributors.
 
-## Allowed Contributions
-We value user feedback. You may contribute by:
-- Reporting bugs via GitHub Issues.
-- Suggesting new features for the live portal.
-- Providing feedback on UI/UX.
+## Local Development Setup
+1. Fork the repository.
+2. Clone your fork locally: `git clone https://github.com/itsrkmahapatra/PromptForge.git`
+3. Open `index.html` in your browser to view local changes, or use a local live server (e.g., VSCode Live Server).
+*(Note: Because this is a client-side architecture, there are no heavy npm installs or build steps required for UI components).*
 
-## Legal Note
-By submitting an issue or feedback, you agree that your suggestions may be implemented in the official software without compensation or attribution.
+## Pull Request Process
+1. Create a feature branch: `git checkout -b feature/your-feature-name`
+2. Ensure your code strictly adheres to the project's focus: **privacy-first, client-side processing, no-installation.** Do not introduce dependencies that require cloud processing.
+3. Test your changes thoroughly across modern browsers (Chrome, Firefox, Safari).
+4. Commit your changes with clear, descriptive messages.
+5. Push to your branch and submit a Pull Request against the `main` branch.
 
-Reference: [LICENSE](./LICENSE)
+## Style Guide
+- Use semantic HTML5.
+- Keep CSS clean and modular (Vanilla CSS preferred).
+- Write modern, asynchronous JavaScript (ES6+).
+- Comment complex algorithms thoroughly.
+
+For any questions, contact the maintainer at **raju.chikitigada@gmail.com**.
