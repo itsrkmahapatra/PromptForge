@@ -1,0 +1,11 @@
+name: All Contributors Bot
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  contribute:
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.comment.body, '@all-contributors')
+    steps:
+      - name: Acknowledge
+        run: echo "Acknowledged contributor"

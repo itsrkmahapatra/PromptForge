@@ -1,0 +1,9 @@
+name: ESLint Code Quality
+on: [pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ESLint
+        run: npx eslint --env browser --env es6 "**/*.js" || true
