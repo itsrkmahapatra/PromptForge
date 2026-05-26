@@ -1,0 +1,24 @@
+name: NPM Security Audit
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Every Monday
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run NPM Audit
+        run: |
+          if [ -f "package.json" ]; then
+            npm audit --audit-level=high || echo "Vulnerabilities found, but continuing workflow."
+          else
+            echo "No package.json found, skipping."
+          fi
