@@ -1,0 +1,18 @@
+name: Close missing info issues
+on:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 14
+          days-before-close: 7
+          stale-issue-label: 'needs-info'
+          stale-issue-message: 'This issue has been marked as needing more information. If no further details are provided, it will be automatically closed.'
+          close-issue-message: 'Closed due to inactivity and missing information.'
+          any-of-labels: 'needs-info'

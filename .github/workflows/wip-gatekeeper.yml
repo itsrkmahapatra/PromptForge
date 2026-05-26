@@ -1,0 +1,13 @@
+name: WIP Gatekeeper
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+jobs:
+  wip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for WIP in title
+        if: contains(github.event.pull_request.title, 'WIP') || contains(github.event.pull_request.title, 'wip')
+        run: |
+          echo "PR title contains WIP. Please remove it when ready to merge."
+          exit 1
