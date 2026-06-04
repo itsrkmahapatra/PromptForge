@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // --- Cloudflare Proxy Configuration ---
+    // If you experience rate limits (429 errors), deploy a free Cloudflare Worker using the provided code
+    // and paste your Worker URL here (e.g., "https://your-proxy.workers.dev/").
+    const PROXY_URL = ""; 
+
     // DOM Elements
     const form = document.getElementById('prompt-form');
     const generateBtn = document.getElementById('generate-btn');
@@ -96,11 +101,23 @@ document.addEventListener('DOMContentLoaded', () => {
         setLoading(true);
         
         try {
-            const endpoint = `https://text.pollinations.ai/${encodeURIComponent(metaPrompt)}`;
+            const baseUrl = PROXY_URL ? PROXY_URL.replace(/\/$/, '') : 'https://text.pollinations.ai';
+            const endpoint = `${baseUrl}/`;
             
             const response = await fetch(endpoint, {
-                method: 'GET',
-                headers: { 'Accept': 'text/plain' }
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: 'user',
+                            content: metaPrompt
+                        }
+                    ],
+                    model: 'openai'
+                })
             });
 
             if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
