@@ -101,12 +101,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!window.puter) throw new Error("Puter.js library not loaded.");
             const puterResponse = await puter.ai.chat(metaPrompt);
             let text = "";
-            if (typeof puterResponse === 'string') {
-                text = puterResponse;
-            } else if (puterResponse && puterResponse.message && typeof puterResponse.message.content === 'string') {
-                text = puterResponse.message.content;
-            } else if (puterResponse && typeof puterResponse.toString === 'function') {
-                text = puterResponse.toString();
+            if (puterResponse) {
+                if (typeof puterResponse === 'string') {
+                    text = puterResponse;
+                } else if (puterResponse.message) {
+                    const content = puterResponse.message.content;
+                    if (typeof content === 'string') {
+                        text = content;
+                    } else if (Array.isArray(content)) {
+                        text = content.map(item => {
+                            if (typeof item === 'string') return item;
+                            if (item && typeof item.text === 'string') return item.text;
+                            return '';
+                        }).join('');
+                    } else if (content) {
+                        text = String(content);
+                    }
+                } else if (typeof puterResponse.text === 'function') {
+                    try {
+                        text = await puterResponse.text();
+                    } catch (e) {
+                        text = String(puterResponse);
+                    }
+                } else {
+                    text = String(puterResponse);
+                }
+            }
+            if (typeof text !== 'string') {
+                text = String(text);
             }
             rawGeneratedText = text.trim();
 
