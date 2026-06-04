@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setLoading(true);
         
         try {
-            const endpoint = 'https://text.pollinations.ai/openai';
+            const endpoint = 'https://text.pollinations.ai/';
             
             const response = await fetchWithRetry(endpoint, {
                 method: 'POST',
@@ -125,20 +125,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'openai',
                     messages: [
                         {
                             role: 'user',
                             content: metaPrompt
                         }
-                    ]
+                    ],
+                    model: 'openai'
                 })
             });
 
             if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
 
-            const data = await response.json();
-            let textResult = data.choices[0].message.content.trim();
+            let textResult = await response.text();
+            textResult = textResult.trim();
 
             rawGeneratedText = textResult.replace(/pollinations/gi, 'Raj Kishor Mahapatra');
 
