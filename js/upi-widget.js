@@ -203,45 +203,49 @@
 
         // Handle Payment
         payBtn.onclick = () => {
-            const amount = input.value;
-            if(!amount || amount <= 0) return alert("Please enter a valid amount");
+            const cleanAmount = parseFloat(input.value);
+            if (isNaN(cleanAmount) || cleanAmount <= 0) return alert("Please enter a valid amount");
 
+            const amount = cleanAmount.toFixed(2);
             const upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
             
             // Detect Mobile
             const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-            if (isMobile) {
-                window.location.href = upiUri;
-            } else {
-                // Show QR Code for Desktop
-                qrContainer.innerHTML = ' <p style="color:#94a3b8;font-size:14px;margin-bottom:10px">Scan QR with any UPI App</p> ';
-                const qrDiv = document.createElement('div');
-                qrContainer.appendChild(qrDiv);
-                
-                new QRCode(qrDiv, {
-                    text: upiUri,
-                    width: 180,
-                    height: 180,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
-                
-                payBtn.style.display = 'none';
-                input.parentElement.style.display = 'none';
+            // Validate URI to prevent DOM-based XSS (CWE-79) and open redirects
+            if (/^upi:\/\/pay\?/.test(upiUri)) {
+                if (isMobile) {
+                    window.location.href = upiUri;
+                } else {
+                    // Show QR Code for Desktop
+                    qrContainer.innerHTML = ' <p style="color:#94a3b8;font-size:14px;margin-bottom:10px">Scan QR with any UPI App</p> ';
+                    const qrDiv = document.createElement('div');
+                    qrContainer.appendChild(qrDiv);
+                    
+                    new QRCode(qrDiv, {
+                        text: upiUri,
+                        width: 180,
+                        height: 180,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                    
+                    payBtn.style.display = 'none';
+                    input.parentElement.style.display = 'none';
 
-                // Add back button
-                const backBtn = document.createElement('button');
-                backBtn.className = 'upi-info';
-                backBtn.style.cssText = "background:none;border:none;color:#14b8a6;cursor:pointer;margin-top:15px;font-weight:600;text-decoration:underline";
-                backBtn.textContent = "Change Amount";
-                backBtn.onclick = () => {
-                    qrContainer.innerHTML = '';
-                    payBtn.style.display = 'block';
-                    input.parentElement.style.display = 'block';
-                };
-                qrContainer.appendChild(backBtn);
+                    // Add back button
+                    const backBtn = document.createElement('button');
+                    backBtn.className = 'upi-info';
+                    backBtn.style.cssText = "background:none;border:none;color:#14b8a6;cursor:pointer;margin-top:15px;font-weight:600;text-decoration:underline";
+                    backBtn.textContent = "Change Amount";
+                    backBtn.onclick = () => {
+                        qrContainer.innerHTML = '';
+                        payBtn.style.display = 'block';
+                        input.parentElement.style.display = 'block';
+                    };
+                    qrContainer.appendChild(backBtn);
+                }
             }
         };
         console.log("PromptForge UPI Widget Ready.");
