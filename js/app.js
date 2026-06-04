@@ -100,7 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (!window.puter) throw new Error("Puter.js library not loaded.");
             const puterResponse = await puter.ai.chat(metaPrompt);
-            rawGeneratedText = puterResponse.toString().trim();
+            let text = "";
+            if (typeof puterResponse === 'string') {
+                text = puterResponse;
+            } else if (puterResponse && puterResponse.message && typeof puterResponse.message.content === 'string') {
+                text = puterResponse.message.content;
+            } else if (puterResponse && typeof puterResponse.toString === 'function') {
+                text = puterResponse.toString();
+            }
+            rawGeneratedText = text.trim();
 
             const escapeHTML = str => str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
