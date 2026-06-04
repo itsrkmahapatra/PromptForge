@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setLoading(true);
         
         try {
-            const endpoint = 'https://gen.pollinations.ai/v1/chat/completions';
+            const endpoint = 'https://text.pollinations.ai/openai';
             
             const response = await fetch(endpoint, {
                 method: 'POST',
