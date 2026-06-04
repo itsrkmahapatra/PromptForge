@@ -1,11 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // --- Cloudflare Proxy Configuration ---
-    // If you experience rate limits (429 errors), deploy a free Cloudflare Worker using the provided code
-    // and paste your Worker URL here (e.g., "https://your-proxy.workers.dev/").
-    const PROXY_URL = ""; 
-
     // DOM Elements
     const form = document.getElementById('prompt-form');
     const generateBtn = document.getElementById('generate-btn');
@@ -101,31 +96,39 @@ document.addEventListener('DOMContentLoaded', () => {
         setLoading(true);
         
         try {
-            const baseUrl = PROXY_URL ? PROXY_URL.replace(/\/$/, '') : 'https://text.pollinations.ai';
-            const endpoint = `${baseUrl}/`;
-            
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    messages: [
-                        {
-                            role: 'user',
-                            content: metaPrompt
-                        }
-                    ],
-                    model: 'openai'
-                })
-            });
-
-            if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
-
-            let textResult = await response.text();
-            textResult = textResult.trim();
-
-            rawGeneratedText = textResult.replace(/pollinations/gi, 'Raj Kishor Mahapatra');
+            if (!window.puter) throw new Error("Puter.js library not loaded.");
+            const puterResponse = await puter.ai.chat(metaPrompt);
+            let text = "";
+            if (puterResponse) {
+                if (typeof puterResponse === 'string') {
+                    text = puterResponse;
+                } else if (puterResponse.message) {
+                    const content = puterResponse.message.content;
+                    if (typeof content === 'string') {
+                        text = content;
+                    } else if (Array.isArray(content)) {
+                        text = content.map(item => {
+                            if (typeof item === 'string') return item;
+                            if (item && typeof item.text === 'string') return item.text;
+                            return '';
+                        }).join('');
+                    } else if (content) {
+                        text = String(content);
+                    }
+                } else if (typeof puterResponse.text === 'function') {
+                    try {
+                        text = await puterResponse.text();
+                    } catch (e) {
+                        text = String(puterResponse);
+                    }
+                } else {
+                    text = String(puterResponse);
+                }
+            }
+            if (typeof text !== 'string') {
+                text = String(text);
+            }
+            rawGeneratedText = text.trim();
 
             const escapeHTML = str => str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
