@@ -63,8 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-
     // --- Core Logic ---
 
     async function generatePrompt(e) {
@@ -98,39 +96,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setLoading(true);
         
         try {
-            if (!window.puter) throw new Error("Puter.js library not loaded.");
-            const puterResponse = await puter.ai.chat(metaPrompt);
-            let text = "";
-            if (puterResponse) {
-                if (typeof puterResponse === 'string') {
-                    text = puterResponse;
-                } else if (puterResponse.message) {
-                    const content = puterResponse.message.content;
-                    if (typeof content === 'string') {
-                        text = content;
-                    } else if (Array.isArray(content)) {
-                        text = content.map(item => {
-                            if (typeof item === 'string') return item;
-                            if (item && typeof item.text === 'string') return item.text;
-                            return '';
-                        }).join('');
-                    } else if (content) {
-                        text = String(content);
-                    }
-                } else if (typeof puterResponse.text === 'function') {
-                    try {
-                        text = await puterResponse.text();
-                    } catch (e) {
-                        text = String(puterResponse);
-                    }
-                } else {
-                    text = String(puterResponse);
-                }
-            }
-            if (typeof text !== 'string') {
-                text = String(text);
-            }
-            rawGeneratedText = text.trim();
+            const endpoint = `https://text.pollinations.ai/${encodeURIComponent(metaPrompt)}`;
+            
+            const response = await fetch(endpoint, {
+                method: 'GET',
+                headers: { 'Accept': 'text/plain' }
+            });
+
+            if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
+
+            let textResult = await response.text();
+            textResult = textResult.trim();
+
+            rawGeneratedText = textResult.replace(/pollinations/gi, 'Raj Kishor Mahapatra');
 
             const escapeHTML = str => str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
