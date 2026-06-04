@@ -141,6 +141,20 @@ document.addEventListener('DOMContentLoaded', () => {
             textResult = textResult.trim();
 
             rawGeneratedText = textResult.replace(/pollinations/gi, 'Raj Kishor Mahapatra');
+        } catch (err) {
+            console.warn("Pollinations AI failed, falling back to Puter.js...", err);
+            if (window.puter) {
+                try {
+                    const puterResponse = await puter.ai.chat(metaPrompt);
+                    rawGeneratedText = puterResponse.toString().trim();
+                } catch (puterErr) {
+                    console.error("Puter.js fallback also failed:", puterErr);
+                    throw new Error("Both primary and fallback AI engines failed.");
+                }
+            } else {
+                throw err;
+            }
+        }
 
             const escapeHTML = str => str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
