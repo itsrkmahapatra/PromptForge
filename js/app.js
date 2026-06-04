@@ -63,6 +63,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function fetchWithRetry(url, options, maxRetries = 3, delay = 1500) {
+        for (let i = 0; i < maxRetries; i++) {
+            try {
+                const response = await fetch(url, options);
+                if (response.status === 429) {
+                    console.warn(`Rate limited (429). Retrying in ${delay}ms...`);
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                    continue;
+                }
+                return response;
+            } catch (err) {
+                if (i === maxRetries - 1) throw err;
+                console.warn(`Fetch error. Retrying in ${delay}ms...`, err);
+                await new Promise(res => setTimeout(res, delay));
+                delay *= 2;
+            }
+        }
+        throw new Error("Max retries reached");
+    }
+
     // --- Core Logic ---
 
     async function generatePrompt(e) {
@@ -98,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const endpoint = 'https://text.pollinations.ai/openai';
             
-            const response = await fetch(endpoint, {
+            const response = await fetchWithRetry(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
