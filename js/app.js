@@ -63,26 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function fetchWithRetry(url, options, maxRetries = 3, delay = 1500) {
-        for (let i = 0; i < maxRetries; i++) {
-            try {
-                const response = await fetch(url, options);
-                if (response.status === 429) {
-                    console.warn(`Rate limited (429). Retrying in ${delay}ms...`);
-                    await new Promise(res => setTimeout(res, delay));
-                    delay *= 2;
-                    continue;
-                }
-                return response;
-            } catch (err) {
-                if (i === maxRetries - 1) throw err;
-                console.warn(`Fetch error. Retrying in ${delay}ms...`, err);
-                await new Promise(res => setTimeout(res, delay));
-                delay *= 2;
-            }
-        }
-        throw new Error("Max retries reached");
-    }
+
 
     // --- Core Logic ---
 
@@ -117,44 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setLoading(true);
         
         try {
-            const endpoint = 'https://text.pollinations.ai/';
-            
-            const response = await fetchWithRetry(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    messages: [
-                        {
-                            role: 'user',
-                            content: metaPrompt
-                        }
-                    ],
-                    model: 'openai'
-                })
-            });
-
-            if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
-
-            let textResult = await response.text();
-            textResult = textResult.trim();
-
-            rawGeneratedText = textResult.replace(/pollinations/gi, 'Raj Kishor Mahapatra');
-        } catch (err) {
-            console.warn("Pollinations AI failed, falling back to Puter.js...", err);
-            if (window.puter) {
-                try {
-                    const puterResponse = await puter.ai.chat(metaPrompt);
-                    rawGeneratedText = puterResponse.toString().trim();
-                } catch (puterErr) {
-                    console.error("Puter.js fallback also failed:", puterErr);
-                    throw new Error("Both primary and fallback AI engines failed.");
-                }
-            } else {
-                throw err;
-            }
-        }
+            if (!window.puter) throw new Error("Puter.js library not loaded.");
+            const puterResponse = await puter.ai.chat(metaPrompt);
+            rawGeneratedText = puterResponse.toString().trim();
 
             const escapeHTML = str => str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])
