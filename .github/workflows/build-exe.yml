@@ -25,7 +25,7 @@ jobs:
           mkdir electron-wrapper
           cd electron-wrapper
           npm init -y
-          npm install electron electron-builder
+          npm install -D electron electron-builder
           
           echo "const { app, BrowserWindow } = require('electron');" > main.js
           echo "function createWindow() {" >> main.js
