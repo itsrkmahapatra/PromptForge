@@ -34,7 +34,7 @@ jobs:
           echo "}" >> main.js
           echo "app.whenReady().then(createWindow);" >> main.js
           
-          Invoke-WebRequest -Uri 'https://avatars.githubusercontent.com/u/89617258?v=4' -OutFile 'icon.png'
+          Copy-Item -Path '../logo.png' -Destination 'icon.png'
           node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json')); pkg.main = 'main.js'; pkg.author = 'Raj Kishor Mahapatra'; pkg.build = { appId: 'com.itsrkmahapatra.promptforge', productName: 'PromptForge', win: { target: 'nsis', icon: 'icon.png', publisherName: 'Raj Kishor Mahapatra' } }; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
           
           npx electron-builder --win
