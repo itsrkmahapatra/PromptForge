@@ -1,0 +1,15 @@
+﻿=========================================
+GITHUB TOPICS/TAGS OPTIMIZATION LIST
+=========================================
+Project Name: PromptForge
+Custom Topics (15):
+prompt-engineering, prompt-generator, prompt-optimization, chatgpt-prompts, claude-prompts, midjourney, generative-ai, ai-engineering, puter-js, serverless, developer-tools, low-latency, tailwindcss, open-source, chatgpt
+
+-----------------------------------------
+INSTRUCTIONS FOR COPY-PASTING:
+1. Open your repository page on GitHub: https://github.com/itsrkmahapatra/PromptForge
+2. Click the gear icon (Settings) next to the "About" section on the right sidebar.
+3. Locate the "Topics" input field.
+4. Copy the list of 15 custom topics above, paste them one-by-one or comma-separated, and press Enter.
+5. Click "Save changes".
+=========================================

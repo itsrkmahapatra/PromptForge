@@ -53,6 +53,7 @@ jobs:
         run: |
           cd apk-wrapper/android
           chmod +x gradlew
+          echo "configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'; exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8' }" >> app/build.gradle
           ./gradlew assembleDebug
 
       - name: Rename APK

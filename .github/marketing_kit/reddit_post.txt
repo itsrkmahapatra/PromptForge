@@ -1,0 +1,28 @@
+﻿=========================================
+REDDIT TITLE OPTIONS:
+1. Show r/webdev: PromptForge — A serverless prompt engineering IDE built with Puter.js
+2. Stop losing your prompts: I built a serverless AI template compiler that runs completely in the browser
+3. How I built a responsive AI prompt workbench using TailwindCSS and Puter.js SDK
+=========================================
+
+Hey r/webdev!
+
+I built **PromptForge**, an open-source prompt engineering IDE designed to help developers and creators organize, build, and test system prompt templates for ChatGPT, Claude, and Midjourney.
+
+### The Pain Point
+Copy-pasting prompts into text editors and manually substituting variables is slow. I wanted a playground where I could save templates with placeholders (like `{role}` or `{context}`) and compile them instantly side-by-side.
+
+### Tech Stack
+- **Frontend:** Vanilla HTML, CSS3, TailwindCSS.
+- **Data Persistence:** Puter.js SDK (providing zero-configuration authentication and serverless KV cloud storage).
+
+### Features
+- Live variable compiler.
+- Cloud synchronization via Puter.js.
+- Clean responsive layout for quick edits on both desktop and mobile.
+
+I'd love to get feedback on the user experience and what kinds of pre-loaded prompt structures/frameworks (like Chain-of-Thought or Few-Shot templates) you think would be most useful to include!
+
+Check out the code here: https://github.com/itsrkmahapatra/PromptForge
+
+Thanks!
