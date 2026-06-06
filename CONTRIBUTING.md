@@ -1,28 +1,36 @@
-# Contributing Guidelines
+﻿# Contributing to PromptForge
 
-First off, thank you for considering contributing to this open-source project! 
-**Important Note:** This guide is strictly for *developers* looking to contribute to the source code. End-users do not need to install anything and can access the tool directly via the live portal.
+Thank you for your interest in contributing to PromptForge! We welcome code contributions, documentation, bug reports, and feature suggestions.
 
-## Code of Conduct
-By participating in this project, you agree to maintain a professional, welcoming, and inclusive environment. Please respect all contributors.
+## 🚀 Local Onboarding Setup
+1. **Fork the Repository:** Fork this repository on GitHub to your account.
+2. **Clone Locally:** Clone your fork using your terminal:
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/PromptForge.git
+   cd PromptForge
+   ```
+3. **Environment Setup:** Make sure you have the appropriate dependencies installed (e.g. Node.js or Python). Install project-specific packages:
+   * Node.js/Vite: `npm install`
+   * Python: `pip install -r requirements.txt`
 
-## Local Development Setup
-1. Fork the repository.
-2. Clone your fork locally: `git clone https://github.com/itsrkmahapatra/PromptForge.git`
-3. Open `index.html` in your browser to view local changes, or use a local live server (e.g., VSCode Live Server).
-*(Note: Because this is a client-side architecture, there are no heavy npm installs or build steps required for UI components).*
+## 🧪 Testing Expectations
+* Always run local tests before pushing your changes:
+  * Running tests: `npm run test` or `python -m pytest` where applicable.
+* Ensure code adheres to formatting rules. Running `npm run lint` or `black .` is highly encouraged.
 
-## Pull Request Process
-1. Create a feature branch: `git checkout -b feature/your-feature-name`
-2. Ensure your code strictly adheres to the project's focus: **privacy-first, client-side processing, no-installation.** Do not introduce dependencies that require cloud processing.
-3. Test your changes thoroughly across modern browsers (Chrome, Firefox, Safari).
-4. Commit your changes with clear, descriptive messages.
-5. Push to your branch and submit a Pull Request against the `main` branch.
+## 🌿 Branching Strategy
+* Always create a descriptive branch for your changes:
+  * `feature/your-feature-name` for new features
+  * `bugfix/your-fix-name` for bug fixes
+* Submit your Pull Request targeting the `main` or `master` branch.
 
-## Style Guide
-- Use semantic HTML5.
-- Keep CSS clean and modular (Vanilla CSS preferred).
-- Write modern, asynchronous JavaScript (ES6+).
-- Comment complex algorithms thoroughly.
+## ✍️ Semantic Commit Message Rules
+We follow semantic commit messages to keep our history clean and clear:
+* `feat`: A new feature
+* `fix`: A bug fix
+* `chore`: Maintenance, updates, configurations
+* `docs`: Documentation changes
+* `refactor`: Code restructuring without function change
+* `test`: Adding or correcting tests
 
-For any questions, contact the maintainer at **raju.chikitigada@gmail.com**.
+Example: `feat: add input sanitization for form variables`
