@@ -37,7 +37,7 @@ jobs:
           npx cap init "PromptForge" "com.itsrkmahapatra.promptforge" --web-dir www
           mkdir www
           echo "<html><body>Loading...</body></html>" > www/index.html
-          echo '{ "appId": "com.itsrkmahapatra.promptforge", "appName": "PromptForge", "webDir": "www", "server": { "url": "https://itsrkmahapatra.github.io/PromptForge", "cleartext": true } }' > capacitor.config.json
+          echo '{ "appId": "com.itsrkmahapatra.promptforge", "appName": "PromptForge", "webDir": "www", "server": { "url": "https://itsrkmahapatra.github.io/PromptForge?v=1780753094", "cleartext": true } }' > capacitor.config.json
           npx cap add android
 
       - name: Add App Icon

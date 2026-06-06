@@ -30,7 +30,7 @@ jobs:
           echo "const { app, BrowserWindow } = require('electron');" > main.js
           echo "function createWindow() {" >> main.js
           echo "  const win = new BrowserWindow({ width: 1280, height: 800, autoHideMenuBar: true, icon: 'icon.png' });" >> main.js
-          echo "  win.loadURL('https://itsrkmahapatra.github.io/PromptForge');" >> main.js
+          echo "  win.loadURL('https://itsrkmahapatra.github.io/PromptForge?v=1780753094', { extraHeaders: 'pragma: no-cache\n' });" >> main.js
           echo "}" >> main.js
           echo "app.whenReady().then(createWindow);" >> main.js
           
