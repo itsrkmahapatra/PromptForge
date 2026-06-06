@@ -1,0 +1,46 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-exe:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create Electron App
+        run: |
+          mkdir electron-wrapper
+          cd electron-wrapper
+          npm init -y
+          npm install electron electron-builder
+          
+          echo "const { app, BrowserWindow } = require('electron');" > main.js
+          echo "function createWindow() {" >> main.js
+          echo "  const win = new BrowserWindow({ width: 1280, height: 800, autoHideMenuBar: true });" >> main.js
+          echo "  win.loadURL('https://itsrkmahapatra.github.io/PromptForge');" >> main.js
+          echo "}" >> main.js
+          echo "app.whenReady().then(createWindow);" >> main.js
+          
+          node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json')); pkg.main = 'main.js'; pkg.build = { appId: 'com.itsrkmahapatra.promptforge', productName: 'PromptForge', win: { target: 'nsis' } }; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));"
+          
+          npx electron-builder --win
+
+      - name: Upload EXE to Release v1.0.0
+        run: |
+          $exe = Get-ChildItem -Path electron-wrapper/dist -Filter "*.exe" | Select-Object -First 1
+          gh release upload v1.0.0 $exe.FullName --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
