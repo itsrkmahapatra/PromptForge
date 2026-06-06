@@ -1,4 +1,4 @@
-﻿# ✍️ PromptForge
+# ✍️ PromptForge
 
 The ultimate high-performance browser-based prompt engineering IDE to craft, optimize, and organize prompt templates for ChatGPT, Claude, and Midjourney.
 
@@ -62,5 +62,5 @@ Contributions are extremely welcome! Please check out [CONTRIBUTING.md](.github/
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 📥 Download Application
-- [🖥️ Windows Download (.exe)](https://github.com/itsrkmahapatra/PromptForge/releases/download/v1.0.0/PromptForge.exe)
-- [📱 Android Download (.apk)](https://github.com/itsrkmahapatra/PromptForge/releases/download/v1.0.0/PromptForge.apk)
+- [🖥️ Windows Download (.exe)](https://github.com/itsrkmahapatra/PromptForge/releases/latest
+- [📱 Android Download (.apk)](https://github.com/itsrkmahapatra/PromptForge/releases/latest
