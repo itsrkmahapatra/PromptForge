@@ -1,4 +1,4 @@
-﻿name: Greetings
+name: Greetings
 
 on:
   issues:
@@ -21,7 +21,7 @@ jobs:
 
       - name: Add Label to Issue
         if: github.event_name == 'issues'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             github.rest.issues.addLabels({
