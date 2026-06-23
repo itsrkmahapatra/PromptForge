@@ -129,33 +129,16 @@
 
             <form id="prompt-form" class="space-y-5 bg-slate-900/50 p-6 rounded-2xl border border-slate-800 shadow-xl">
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Prompt Type -->
-                    <div class="space-y-1">
-                        <label for="prompt-type" class="block text-sm font-medium text-slate-300">Generation Type</label>
-                        <select id="prompt-type" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
-                            <option value="Text">Text</option>
-                            <option value="Image">Image</option>
-                            <option value="Code">Code</option>
-                            <option value="Video">Video</option>
-                            <option value="Music">Music</option>
-                        </select>
-                    </div>
-
-                    <!-- Target AI Model -->
-                    <div class="space-y-1">
-                        <label for="ai-model" class="block text-sm font-medium text-slate-300">Target AI Model</label>
-                        <select id="ai-model" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
-                            <option value="">Auto-Detect / Default (Puter Fast)</option>
-                            <option value="openai/gpt-4o">OpenAI GPT-4o</option>
-                            <option value="openai/gpt-4o-mini">OpenAI GPT-4o-mini</option>
-                            <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
-                            <option value="claude-3-7-sonnet">Claude 3.7 Sonnet</option>
-                            <option value="meta/llama-3.1-405b-instruct">Llama 3.1 405B</option>
-                            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
-                            <option value="deepseek/deepseek-chat">DeepSeek Chat</option>
-                        </select>
-                    </div>
+                <!-- Prompt Type -->
+                <div class="space-y-1">
+                    <label for="prompt-type" class="block text-sm font-medium text-slate-300">Generation Type</label>
+                    <select id="prompt-type" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                        <option value="Text">Text</option>
+                        <option value="Image">Image</option>
+                        <option value="Code">Code</option>
+                        <option value="Video">Video</option>
+                        <option value="Music">Music</option>
+                    </select>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
