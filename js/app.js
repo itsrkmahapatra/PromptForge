@@ -80,13 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const m = fieldModel.value;
         const temp = fieldTemperature.value;
 
-        let metaPrompt = `You are an expert Prompt Engineer. Generate a highly effective, ready-to-copy prompt for the user to paste into an AI model. `;
+        let metaPrompt = `You are an expert Prompt Engineer. Generate a highly effective, ready-to-copy prompt for the user to paste into any AI model. Ensure the generated prompt is highly adaptable and can be used on any model anywhere, while matching the specified parameters. `;
         
         let preferences = "Base the prompt on these exact parameters:\n";
         preferences += `- Target AI Output Type: ${pt}\n`;
         if (m) {
             const modelName = fieldModel.options[fieldModel.selectedIndex].text;
-            preferences += `- Target AI Model (Tailor formatting, styling, and syntax specifically for this model): ${modelName}\n`;
+            preferences += `- Target AI Model (Optionally optimize structural formatting, styling, or syntax for this model, while keeping the prompt generic enough to be used on other models if needed): ${modelName}\n`;
         }
         if (t) preferences += `- Topic/Task: ${t}\n`;
         if (p) preferences += `- AI Persona/Role to assume: ${p}\n`;
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         - Output ONLY the final generated prompt text.
         - Use markdown like **bolding** to highlight important instructions.
         - Do not include conversational filler like "Here is your prompt".
-        - Ensure structural formatting (e.g. system role tags, markdown tables, variables using brackets, or XML tags) is optimized for the selected Target AI Model.`;
+        - The prompt must be versatile enough to run on any LLM, though optionally tailored/structured for the chosen Target AI Model.`;
 
         setLoading(true);
         
