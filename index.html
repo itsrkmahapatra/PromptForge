@@ -137,10 +137,33 @@
                         </select>
                     </div>
 
+                    <!-- Target AI Model -->
+                    <div class="space-y-1">
+                        <label for="ai-model" class="block text-sm font-medium text-slate-300">Target AI Model</label>
+                        <select id="ai-model" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                            <option value="">Auto-Detect / Default (Puter Fast)</option>
+                            <option value="openai/gpt-4o">OpenAI GPT-4o</option>
+                            <option value="openai/gpt-4o-mini">OpenAI GPT-4o-mini</option>
+                            <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
+                            <option value="claude-3-7-sonnet">Claude 3.7 Sonnet</option>
+                            <option value="meta/llama-3.1-405b-instruct">Llama 3.1 405B</option>
+                            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                            <option value="deepseek/deepseek-chat">DeepSeek Chat</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Topic -->
                     <div class="space-y-1">
                         <label for="topic" class="block text-sm font-medium text-slate-300">Topic / Idea</label>
                         <input type="text" id="topic" placeholder="e.g., A marketing plan..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white placeholder-slate-500">
+                    </div>
+
+                    <!-- Target Audience -->
+                    <div class="space-y-1">
+                        <label for="audience" class="block text-sm font-medium text-slate-300">Target Audience</label>
+                        <input type="text" id="audience" placeholder="e.g., Beginners, Executives" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white placeholder-slate-500">
                     </div>
                 </div>
 
@@ -174,12 +197,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Target Audience -->
-                    <div class="space-y-1">
-                        <label for="audience" class="block text-sm font-medium text-slate-300">Target Audience</label>
-                        <input type="text" id="audience" placeholder="e.g., Beginners, Executives" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white placeholder-slate-500">
-                    </div>
-
                     <!-- Output Length -->
                     <div class="space-y-1">
                         <label for="length" class="block text-sm font-medium text-slate-300">Output Detail / Length</label>
@@ -188,6 +205,18 @@
                             <option value="Very Short & Concise">Short & Concise</option>
                             <option value="Medium detail">Medium detail</option>
                             <option value="Highly Detailed & Comprehensive">Highly Detailed</option>
+                        </select>
+                    </div>
+
+                    <!-- Creative Temperature -->
+                    <div class="space-y-1">
+                        <label for="temperature" class="block text-sm font-medium text-slate-300">Creative Temperature</label>
+                        <select id="temperature" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-colors outline-none text-white appearance-none cursor-pointer">
+                            <option value="">Balanced / Default (1.0)</option>
+                            <option value="0.2">Precise & Literal (0.2)</option>
+                            <option value="0.7">Coherent & Focused (0.7)</option>
+                            <option value="1.2">Creative & Expressive (1.2)</option>
+                            <option value="1.7">Highly Wild & Random (1.7)</option>
                         </select>
                     </div>
                 </div>
