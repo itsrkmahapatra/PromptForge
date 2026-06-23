@@ -22,40 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const fieldAudience = document.getElementById('audience');
     const fieldLength = document.getElementById('length');
     const fieldContext = document.getElementById('context');
-    const fieldModel = document.getElementById('ai-model');
     const fieldTemperature = document.getElementById('temperature');
 
     // Store raw text for accurate copying
     let rawGeneratedText = "";
-
-    // AI Models data configurations
-    let allTextModels = [];
-
-    const NON_TEXT_MODELS = [
-        'dall-e-3', 'midjourney-v6', 'stable-diffusion-3', 'flux-1',
-        'sora', 'runway-gen-3', 'pika', 'kling',
-        'suno-v4', 'udio', 'stable-audio'
-    ];
-
-    const CURATED_MODELS = {
-        'Image': [
-            { id: 'midjourney-v6', name: 'Midjourney v6' },
-            { id: 'dall-e-3', name: 'OpenAI DALL-E 3' },
-            { id: 'stable-diffusion-3', name: 'Stable Diffusion 3' },
-            { id: 'flux-1', name: 'FLUX.1' }
-        ],
-        'Video': [
-            { id: 'sora', name: 'OpenAI Sora' },
-            { id: 'runway-gen-3', name: 'Runway Gen-3' },
-            { id: 'pika', name: 'Pika Labs' },
-            { id: 'kling', name: 'Kling AI' }
-        ],
-        'Music': [
-            { id: 'suno-v4', name: 'Suno v4' },
-            { id: 'udio', name: 'Udio' },
-            { id: 'stable-audio', name: 'Stable Audio' }
-        ]
-    };
 
     // --- Utilities ---
 
@@ -106,17 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const a = fieldAudience.value.trim();
         const l = fieldLength.value;
         const c = fieldContext.value.trim();
-        const m = fieldModel.value;
         const temp = fieldTemperature.value;
 
         let metaPrompt = `You are an expert Prompt Engineer. Generate a highly effective, ready-to-copy prompt for the user to paste into any AI model. Ensure the generated prompt is highly adaptable and can be used on any model anywhere, while matching the specified parameters. `;
         
         let preferences = "Base the prompt on these exact parameters:\n";
         preferences += `- Target AI Output Type: ${pt}\n`;
-        if (m) {
-            const modelName = fieldModel.options[fieldModel.selectedIndex].text;
-            preferences += `- Target AI Model (Optionally optimize structural formatting, styling, or syntax for this model, while keeping the prompt generic enough to be used on other models if needed): ${modelName}\n`;
-        }
         if (t) preferences += `- Topic/Task: ${t}\n`;
         if (p) preferences += `- AI Persona/Role to assume: ${p}\n`;
         if (tn) preferences += `- Tone of Voice: ${tn}\n`;
@@ -129,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         - Output ONLY the final generated prompt text.
         - Use markdown like **bolding** to highlight important instructions.
         - Do not include conversational filler like "Here is your prompt".
-        - The prompt must be versatile enough to run on any LLM, though optionally tailored/structured for the chosen Target AI Model.`;
+        - The prompt must be versatile enough to run on any LLM.`;
 
         setLoading(true);
         
@@ -137,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!window.puter) throw new Error("Puter.js library not loaded.");
             
             const chatOptions = {};
-            if (m && !NON_TEXT_MODELS.includes(m)) chatOptions.model = m;
             if (temp) chatOptions.temperature = parseFloat(temp);
 
             const puterResponse = await puter.ai.chat(metaPrompt, chatOptions);
@@ -239,135 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
         resultText.innerHTML = '';
         rawGeneratedText = '';
     }
-
-    function updateModelSelector() {
-        if (!fieldModel) return;
-
-        const genType = fieldPromptType.value; // "Text", "Image", "Code", "Video", "Music"
-        
-        // Reset dropdown
-        fieldModel.innerHTML = '<option value="">Auto-Detect / Default (Puter Fast)</option>';
-
-        if (genType === 'Text' || genType === 'Code') {
-            if (allTextModels.length > 0) {
-                // Populate from cached Puter text models
-                const groups = {};
-
-                allTextModels.forEach(model => {
-                    const id = model.id || model.name || model.key || (typeof model === 'string' ? model : '');
-                    if (!id) return;
-
-                    let name = model.name || model.label || model.title || id;
-                    let provider = model.provider || '';
-
-                    if (!provider) {
-                        if (id.includes('/')) {
-                            provider = id.split('/')[0];
-                        } else if (id.toLowerCase().includes('gpt') || id.toLowerCase().includes('openai')) {
-                            provider = 'OpenAI';
-                        } else if (id.toLowerCase().includes('claude') || id.toLowerCase().includes('anthropic')) {
-                            provider = 'Anthropic';
-                        } else if (id.toLowerCase().includes('gemini') || id.toLowerCase().includes('google')) {
-                            provider = 'Google';
-                        } else if (id.toLowerCase().includes('llama') || id.toLowerCase().includes('meta')) {
-                            provider = 'Meta';
-                        } else if (id.toLowerCase().includes('mistral')) {
-                            provider = 'Mistral';
-                        } else if (id.toLowerCase().includes('deepseek')) {
-                            provider = 'DeepSeek';
-                        } else {
-                            provider = 'Other';
-                        }
-                    }
-
-                    provider = provider.charAt(0).toUpperCase() + provider.slice(1);
-
-                    if (!groups[provider]) {
-                        groups[provider] = [];
-                    }
-
-                    groups[provider].push({ id, name });
-                });
-
-                const priorityProviders = ['OpenAI', 'Anthropic', 'Google', 'Meta', 'Deepseek', 'Mistral'];
-                const sortedProviders = Object.keys(groups).sort((a, b) => {
-                    const idxA = priorityProviders.indexOf(a);
-                    const idxB = priorityProviders.indexOf(b);
-                    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-                    if (idxA !== -1) return -1;
-                    if (idxB !== -1) return 1;
-                    return a.localeCompare(b);
-                });
-
-                sortedProviders.forEach(provider => {
-                    const optgroup = document.createElement('optgroup');
-                    optgroup.label = provider;
-
-                    groups[provider].sort((a, b) => a.name.localeCompare(b.name));
-
-                    groups[provider].forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.name;
-                        optgroup.appendChild(option);
-                    });
-
-                    fieldModel.appendChild(optgroup);
-                });
-            } else {
-                // Fallback static list for Text/Code if fetching failed
-                const fallbackTextOptions = [
-                    { value: 'openai/gpt-4o', label: 'OpenAI GPT-4o' },
-                    { value: 'openai/gpt-4o-mini', label: 'OpenAI GPT-4o-mini' },
-                    { value: 'claude-3-5-sonnet', label: 'Claude 3.5 Sonnet' },
-                    { value: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet' },
-                    { value: 'meta/llama-3.1-405b-instruct', label: 'Llama 3.1 405B' },
-                    { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
-                    { value: 'deepseek/deepseek-chat', label: 'DeepSeek Chat' }
-                ];
-                fallbackTextOptions.forEach(opt => {
-                    const option = document.createElement('option');
-                    option.value = opt.value;
-                    option.textContent = opt.label;
-                    fieldModel.appendChild(option);
-                });
-            }
-        } else if (CURATED_MODELS[genType]) {
-            // Populate image, video, or music curated models
-            CURATED_MODELS[genType].forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.id;
-                option.textContent = item.name;
-                fieldModel.appendChild(option);
-            });
-        }
-    }
-
-    async function populateModelDropdown() {
-        try {
-            if (window.puter && typeof puter.ai.listModels === 'function') {
-                const models = await puter.ai.listModels();
-                if (Array.isArray(models) && models.length > 0) {
-                    allTextModels = models;
-                }
-            }
-        } catch (err) {
-            console.warn("Failed to dynamically fetch models from Puter:", err);
-        }
-        updateModelSelector();
-    }
-
     // --- Event Listeners ---
     generateBtn.addEventListener('click', generatePrompt);
     copyBtn.addEventListener('click', copyToClipboard);
     clearBtn.addEventListener('click', clearForm);
-    fieldPromptType.addEventListener('change', updateModelSelector);
     
     // Sync edits back to rawGeneratedText
     resultText.addEventListener('input', () => {
         rawGeneratedText = resultText.innerText;
     });
-
-    // Populate models dropdown
-    populateModelDropdown();
 });
