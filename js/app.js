@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fieldAudience = document.getElementById('audience');
     const fieldLength = document.getElementById('length');
     const fieldContext = document.getElementById('context');
+    const fieldModel = document.getElementById('ai-model');
+    const fieldTemperature = document.getElementById('temperature');
 
     // Store raw text for accurate copying
     let rawGeneratedText = "";
@@ -75,11 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const a = fieldAudience.value.trim();
         const l = fieldLength.value;
         const c = fieldContext.value.trim();
+        const m = fieldModel.value;
+        const temp = fieldTemperature.value;
 
         let metaPrompt = `You are an expert Prompt Engineer. Generate a highly effective, ready-to-copy prompt for the user to paste into an AI model. `;
         
         let preferences = "Base the prompt on these exact parameters:\n";
         preferences += `- Target AI Output Type: ${pt}\n`;
+        if (m) {
+            const modelName = fieldModel.options[fieldModel.selectedIndex].text;
+            preferences += `- Target AI Model (Tailor formatting, styling, and syntax specifically for this model): ${modelName}\n`;
+        }
         if (t) preferences += `- Topic/Task: ${t}\n`;
         if (p) preferences += `- AI Persona/Role to assume: ${p}\n`;
         if (tn) preferences += `- Tone of Voice: ${tn}\n`;
@@ -91,13 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
         metaPrompt += `\nCRITICAL INSTRUCTIONS: 
         - Output ONLY the final generated prompt text.
         - Use markdown like **bolding** to highlight important instructions.
-        - Do not include conversational filler like "Here is your prompt".`;
+        - Do not include conversational filler like "Here is your prompt".
+        - Ensure structural formatting (e.g. system role tags, markdown tables, variables using brackets, or XML tags) is optimized for the selected Target AI Model.`;
 
         setLoading(true);
         
         try {
             if (!window.puter) throw new Error("Puter.js library not loaded.");
-            const puterResponse = await puter.ai.chat(metaPrompt);
+            
+            const chatOptions = {};
+            if (m) chatOptions.model = m;
+            if (temp) chatOptions.temperature = parseFloat(temp);
+
+            const puterResponse = await puter.ai.chat(metaPrompt, chatOptions);
             let text = "";
             if (puterResponse) {
                 if (typeof puterResponse === 'string') {
@@ -154,15 +168,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function copyToClipboard() {
-        if (!rawGeneratedText) return;
+        const textToCopy = (resultText.innerText || resultText.textContent || rawGeneratedText || "").trim();
+        if (!textToCopy) return;
 
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => showToast('Text copied to clipboard!'))
+                .catch(err => {
+                    console.error("Clipboard API failed: ", err);
+                    fallbackCopy(textToCopy);
+                });
+        } else {
+            fallbackCopy(textToCopy);
+        }
+    }
+
+    function fallbackCopy(text) {
         const textArea = document.createElement("textarea");
-        textArea.value = rawGeneratedText;
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.opacity = "0";
         document.body.appendChild(textArea);
+        textArea.focus();
         textArea.select();
         try {
             document.execCommand('copy');
-            showToast('Raw text copied to clipboard!');
+            showToast('Text copied to clipboard!');
         } catch (err) {
             showToast('Failed to copy', 'error');
         }
@@ -178,8 +211,100 @@ document.addEventListener('DOMContentLoaded', () => {
         rawGeneratedText = '';
     }
 
+    async function populateModelDropdown() {
+        if (!fieldModel) return;
+
+        try {
+            // Check if Puter SDK has loaded and has the listModels function
+            if (window.puter && typeof puter.ai.listModels === 'function') {
+                const models = await puter.ai.listModels();
+                if (Array.isArray(models) && models.length > 0) {
+                    const defaultOption = fieldModel.options[0];
+                    fieldModel.innerHTML = '';
+                    fieldModel.appendChild(defaultOption);
+
+                    const groups = {};
+
+                    models.forEach(model => {
+                        const id = model.id || model.name || model.key || (typeof model === 'string' ? model : '');
+                        if (!id) return;
+
+                        let name = model.name || model.label || model.title || id;
+                        let provider = model.provider || '';
+
+                        if (!provider) {
+                            if (id.includes('/')) {
+                                provider = id.split('/')[0];
+                            } else if (id.toLowerCase().includes('gpt') || id.toLowerCase().includes('openai')) {
+                                provider = 'OpenAI';
+                            } else if (id.toLowerCase().includes('claude') || id.toLowerCase().includes('anthropic')) {
+                                provider = 'Anthropic';
+                            } else if (id.toLowerCase().includes('gemini') || id.toLowerCase().includes('google')) {
+                                provider = 'Google';
+                            } else if (id.toLowerCase().includes('llama') || id.toLowerCase().includes('meta')) {
+                                provider = 'Meta';
+                            } else if (id.toLowerCase().includes('mistral')) {
+                                provider = 'Mistral';
+                            } else if (id.toLowerCase().includes('deepseek')) {
+                                provider = 'DeepSeek';
+                            } else {
+                                provider = 'Other';
+                            }
+                        }
+
+                        // Format provider string
+                        provider = provider.charAt(0).toUpperCase() + provider.slice(1);
+
+                        if (!groups[provider]) {
+                            groups[provider] = [];
+                        }
+
+                        groups[provider].push({ id, name });
+                    });
+
+                    // Sort providers, putting major ones first
+                    const priorityProviders = ['OpenAI', 'Anthropic', 'Google', 'Meta', 'Deepseek', 'Mistral'];
+                    const sortedProviders = Object.keys(groups).sort((a, b) => {
+                        const idxA = priorityProviders.indexOf(a);
+                        const idxB = priorityProviders.indexOf(b);
+                        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                        if (idxA !== -1) return -1;
+                        if (idxB !== -1) return 1;
+                        return a.localeCompare(b);
+                    });
+
+                    sortedProviders.forEach(provider => {
+                        const optgroup = document.createElement('optgroup');
+                        optgroup.label = provider;
+
+                        groups[provider].sort((a, b) => a.name.localeCompare(b.name));
+
+                        groups[provider].forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.id;
+                            option.textContent = item.name;
+                            optgroup.appendChild(option);
+                        });
+
+                        fieldModel.appendChild(optgroup);
+                    });
+                }
+            }
+        } catch (err) {
+            console.warn("Failed to dynamically fetch models from Puter:", err);
+        }
+    }
+
     // --- Event Listeners ---
     generateBtn.addEventListener('click', generatePrompt);
     copyBtn.addEventListener('click', copyToClipboard);
     clearBtn.addEventListener('click', clearForm);
+    
+    // Sync edits back to rawGeneratedText
+    resultText.addEventListener('input', () => {
+        rawGeneratedText = resultText.innerText;
+    });
+
+    // Populate models dropdown
+    populateModelDropdown();
 });
