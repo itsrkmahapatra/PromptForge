@@ -4,6 +4,6 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Run ESLint
         run: npx eslint --env browser --env es6 "**/*.js" || true
