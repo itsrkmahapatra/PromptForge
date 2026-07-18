@@ -1,0 +1,40 @@
+name: Auto Prune Old Deployments
+
+on:
+  push:
+    branches: [ main, gh-pages ]
+  workflow_run:
+    workflows: ["pages-build-deployment", "Deploy", "CI"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  deployments: write
+  actions: write
+
+jobs:
+  cleanup-deployments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prune old deployments and keep only the latest 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          repo="${{ github.repository }}"
+          echo "Fetching deployment history for $repo..."
+          
+          # Fetch up to 100 deployments, keep index 0 (latest), iterate over index 1+ (older deployments)
+          deployment_ids=$(gh api -X GET "/repos/$repo/deployments" -F per_page=100 | jq -r '.[1:] // [] | .[].id')
+          
+          if [ -z "$deployment_ids" ]; then
+            echo "No older deployments to prune. Only the latest deployment exists."
+          else
+            for id in $deployment_ids; do
+              echo "Marking deployment $id as inactive..."
+              gh api -X POST "/repos/$repo/deployments/$id/statuses" -f state=inactive || true
+              
+              echo "Deleting deployment $id..."
+              gh api -X DELETE "/repos/$repo/deployments/$id" || true
+            done
+            echo "Successfully pruned old deployments. Only 1 active deployment remains."
+          fi
