@@ -1,4 +1,4 @@
-﻿name: Greetings
+name: Greetings
 
 on:
   issues:
@@ -13,7 +13,7 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/first-interaction@v1
+      - uses: actions/first-interaction@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: "👋 Welcome to the project! Thank you for raising this issue. A maintainer will review it shortly. In the meantime, feel free to explore the code!"
