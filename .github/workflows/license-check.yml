@@ -1,9 +1,0 @@
-name: License Compliance
-on: [pull_request]
-jobs:
-  license:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Check Licenses
-        run: npx license-checker --summary || true

@@ -1,9 +1,0 @@
-name: Inclusive Language
-on: [pull_request]
-jobs:
-  alex:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Run Alex
-        run: npx alex . || true

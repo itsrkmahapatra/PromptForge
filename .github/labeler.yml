@@ -1,6 +1,0 @@
-frontend:
-  - any: ['**/*.html', '**/*.css', '**/*.js']
-docs:
-  - any: ['**/*.md']
-config:
-  - any: ['.github/**']
